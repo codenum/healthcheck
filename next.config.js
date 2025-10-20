@@ -3,7 +3,6 @@ const nextConfig = {
   output: 'export',
   trailingSlash: true,
   basePath: '/Survey',
-  assetPrefix: '/Survey/',
   images: {
     unoptimized: true
   }
