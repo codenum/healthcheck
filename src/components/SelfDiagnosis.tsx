@@ -7,16 +7,46 @@ interface SelfDiagnosisProps {
 }
 
 const symptomsList = [
-  { id: 'cough', label: '기침이 난다', category: 'respiratory' },
-  { id: 'stomachache', label: '복통이 있다', category: 'digestive' },
-  { id: 'fatigue', label: '피곤하다', category: 'sleep' },
-  { id: 'headache', label: '두통이 있다', category: 'stress' },
-  { id: 'fever', label: '열이 난다', category: 'respiratory' },
-  { id: 'nausea', label: '속이 미식거린다', category: 'digestive' },
-  { id: 'dizziness', label: '어지럽다', category: 'circulation' },
-  { id: 'insomnia', label: '잠이 잘 안 온다', category: 'sleep' },
-  { id: 'anxiety', label: '불안하다', category: 'mental' },
-  { id: 'muscle_pain', label: '근육이 아프다', category: 'exercise' }
+  // 1. 호흡기 건강
+  { id: 'cough', label: '기침이 자주 나온다', category: 'respiratory' },
+  { id: 'sore_throat', label: '목이 아프거나 따끔거린다', category: 'respiratory' },
+  { id: 'runny_nose', label: '콧물이 나거나 코가 막힌다', category: 'respiratory' },
+  // 2. 소화기 건강
+  { id: 'stomachache', label: '복통, 속쓰림, 더부룩함이 있다', category: 'digestive' },
+  { id: 'indigestion', label: '소화가 잘 안되고 가스가 찬다', category: 'digestive' },
+  { id: 'loss_of_appetite', label: '식욕이 없다', category: 'digestive' },
+  // 3. 피로/수면
+  { id: 'fatigue', label: '쉽게 피로하고 지친다', category: 'fatigue' },
+  { id: 'poor_sleep', label: '수면의 질이 좋지 않다 (자주 깸, 아침에 개운하지 않음)', category: 'fatigue' },
+  { id: 'lack_of_concentration', label: '집중력이 떨어지고 멍하다', category: 'fatigue' },
+  // 4. 식습관
+  { id: 'irregular_meals', label: '식사 시간이 불규칙하다', category: 'eating' },
+  { id: 'late_night_snack', label: '야식이나 폭식을 자주 한다', category: 'eating' },
+  { id: 'unbalanced_diet', label: '인스턴트, 단 음식 위주로 식사한다', category: 'eating' },
+  // 5. 운동 부족
+  { id: 'low_activity', label: '하루 대부분을 앉아서 보낸다', category: 'exercise' },
+  { id: 'no_regular_exercise', label: '정기적인 운동을 전혀 하지 않는다', category: 'exercise' },
+  { id: 'feel_heavy', label: '몸이 무겁고 찌뿌둥하다', category: 'exercise' },
+  // 6. 정신건강
+  { id: 'anxiety', label: '불안하거나 초조함을 자주 느낀다', category: 'mental' },
+  { id: 'depressed', label: '기분이 우울하고 무기력하다', category: 'mental' },
+  { id: 'high_stress', label: '학업, 대인관계 등 스트레스가 심하다', category: 'mental' },
+  // 7. 체중관리
+  { id: 'sudden_weight_change', label: '최근 급격한 체중 변화가 있었다', category: 'weight' },
+  { id: 'weight_satisfaction', label: '현재 체중에 만족하지 않는다', category: 'weight' },
+  { id: 'difficulty_in_control', label: '체중 조절에 어려움을 겪는다', category: 'weight' },
+  // 8. 피부건강
+  { id: 'acne', label: '여드름, 뾰루지 등 피부 트러블이 잦다', category: 'skin' },
+  { id: 'itchiness_dryness', label: '피부가 가렵거나 건조하다', category: 'skin' },
+  { id: 'dull_skin_tone', label: '피부 톤이 칙칙하고 푸석하다', category: 'skin' },
+  // 9. 면역력
+  { id: 'frequent_cold', label: '감기에 자주 걸린다', category: 'immunity' },
+  { id: 'slow_recovery', label: '상처나 질병의 회복이 더디다', category: 'immunity' },
+  { id: 'chronic_fatigue', label: '피로가 잘 풀리지 않고 누적된다', category: 'immunity' },
+  // 10. 기타 증상
+  { id: 'headache', label: '두통이 자주 있다', category: 'other' },
+  { id: 'dizziness', label: '어지럼증을 느낀다', category: 'other' },
+  { id: 'etc_symptom', label: '설명하기 어려운 다른 불편한 증상이 있다', category: 'other' },
 ]
 
 export default function SelfDiagnosis({ onComplete }: SelfDiagnosisProps) {
@@ -32,44 +62,20 @@ export default function SelfDiagnosis({ onComplete }: SelfDiagnosisProps) {
   }
 
   const analyzeSymptoms = () => {
-    if (selectedSymptoms.length === 0) return
+    if (selectedSymptoms.length === 0) return;
 
-    const categories = selectedSymptoms.map(id => 
-      symptomsList.find(s => s.id === id)?.category
-    )
-    
-    const categoryCount = categories.reduce((acc, cat) => {
-      if (cat) acc[cat] = (acc[cat] || 0) + 1
-      return acc
-    }, {} as Record<string, number>)
-
-    const dominantCategory = Object.entries(categoryCount)
-      .sort(([,a], [,b]) => b - a)[0]?.[0]
-
-    let recommendedType = 'general'
-    switch (dominantCategory) {
-      case 'sleep':
-        recommendedType = 'sleep'
-        break
-      case 'digestive':
-      case 'circulation':
-        recommendedType = 'diet'
-        break
-      case 'exercise':
-      case 'muscle_pain':
-        recommendedType = 'exercise'
-        break
-      default:
-        recommendedType = 'general'
-    }
-
-    setShowResult(true)
+    const recommendedType = getRecommendedTypeText(true) as string;
+    setShowResult(true);
     setTimeout(() => {
-      onComplete(selectedSymptoms, recommendedType)
-    }, 2000)
+      onComplete(selectedSymptoms, recommendedType);
+    }, 2000);
   }
 
-  const getRecommendedTypeText = () => {
+  const getRecommendedTypeText = (returnId = false) => {
+    if (selectedSymptoms.length === 0) {
+      return returnId ? 'general' : { type: '...', description: '...' };
+    }
+
     const categories = selectedSymptoms.map(id => 
       symptomsList.find(s => s.id === id)?.category
     )
@@ -83,20 +89,33 @@ export default function SelfDiagnosis({ onComplete }: SelfDiagnosisProps) {
       .sort(([,a], [,b]) => b - a)[0]?.[0]
 
     switch (dominantCategory) {
-      case 'sleep':
-        return { type: '💤 수면 부족형', description: '충분한 수면과 휴식이 필요합니다' }
+      case 'respiratory':
+        return returnId ? 'respiratory' : { type: '1️⃣ 감기형', description: '호흡기 건강에 주의가 필요합니다. 충분한 휴식과 수분 섭취를 권장합니다.' };
       case 'digestive':
-      case 'circulation':
-        return { type: '🍱 식습관 불균형형', description: '균형잡힌 식단 관리가 필요합니다' }
+        return returnId ? 'digestive' : { type: '2️⃣ 소화불량형', description: '소화기 건강 관리가 필요합니다. 규칙적인 식사와 자극적이지 않은 음식을 드세요.' };
+      case 'fatigue':
+        return returnId ? 'fatigue' : { type: '3️⃣ 수면 부족형', description: '만성 피로와 수면 부족이 의심됩니다. 규칙적인 수면 습관을 가져보세요.' };
+      case 'eating':
+        return returnId ? 'eating' : { type: '4️⃣ 식습관 불균형형', description: '불규칙한 식습관 개선이 시급합니다. 영양가 있는 식사를 규칙적으로 하세요.' };
       case 'exercise':
-        return { type: '🏃 운동 부족형', description: '규칙적인 운동이 필요합니다' }
+        return returnId ? 'exercise' : { type: '5️⃣ 운동 부족형', description: '신체 활동량을 늘려야 합니다. 가벼운 스트레칭이나 걷기부터 시작해보세요.' };
+      case 'mental':
+        return returnId ? 'mental' : { type: '6️⃣ 스트레스 관리형', description: '정신 건강에 관심을 가져야 할 때입니다. 명상이나 취미 활동을 추천합니다.' };
+      case 'weight':
+        return returnId ? 'weight' : { type: '7️⃣ 체중 관리형', description: '체계적인 체중 관리가 필요합니다. 전문가와 상담을 고려해보세요.' };
+      case 'skin':
+        return returnId ? 'skin' : { type: '8️⃣ 피부 관리형', description: '피부 건강을 위한 관리가 필요합니다. 충분한 수분 섭취와 청결 유지가 중요합니다.' };
+      case 'immunity':
+        return returnId ? 'immunity' : { type: '9️⃣ 면역 저하형', description: '면역력 증진이 필요합니다. 균형 잡힌 식사와 충분한 휴식을 취하세요.' };
+      case 'other':
+        return returnId ? 'other' : { type: '🔟 종합 점검형', description: '전반적인 건강 상태 점검이 필요합니다. 보건실에 방문하여 상담받는 것을 권장합니다.' };
       default:
-        return { type: '🏥 종합 관리형', description: '전반적인 건강 관리가 필요합니다' }
+        return returnId ? 'general' : { type: '🏥 종합 관리형', description: '전반적인 건강 관리가 필요합니다.' };
     }
   }
 
   if (showResult) {
-    const result = getRecommendedTypeText()
+    const result = getRecommendedTypeText() as { type: string; description: string; };
     return (
       <div className="max-w-4xl mx-auto p-6">
         <div className="bg-white rounded-2xl shadow-xl p-8">
@@ -158,12 +177,12 @@ export default function SelfDiagnosis({ onComplete }: SelfDiagnosisProps) {
           <div className="bg-white/10 rounded-lg p-3">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">진행률</span>
-              <span className="text-sm">{selectedSymptoms.length}/10</span>
+              <span className="text-sm">{selectedSymptoms.length}/{symptomsList.length}</span>
             </div>
             <div className="w-full bg-white/20 rounded-full h-2 mt-2">
               <div 
                 className="bg-white rounded-full h-2 transition-all duration-300"
-                style={{ width: `${(selectedSymptoms.length / 10) * 100}%` }}
+                style={{ width: `${(selectedSymptoms.length / symptomsList.length) * 100}%` }}
               ></div>
             </div>
           </div>
