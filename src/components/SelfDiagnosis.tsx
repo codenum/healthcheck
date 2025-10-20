@@ -6,6 +6,19 @@ interface SelfDiagnosisProps {
   onComplete: (symptoms: string[], recommendedType: string) => void
 }
 
+const categoryInfo = [
+  { id: 'respiratory', title: '1️⃣ 호흡기 건강', description: '기침, 목 통증, 콧물' },
+  { id: 'digestive', title: '2️⃣ 소화기 건강', description: '복통, 속쓰림, 식욕저하' },
+  { id: 'fatigue', title: '3️⃣ 피로/수면', description: '피곤함, 수면시간, 집중력 저하' },
+  { id: 'eating', title: '4️⃣ 식습관', description: '불규칙 식사, 야식' },
+  { id: 'exercise', title: '5️⃣ 운동 부족', description: '하루 활동량, 스트레칭 빈도' },
+  { id: 'mental', title: '6️⃣ 정신건강', description: '불안, 우울감, 스트레스 수준' },
+  { id: 'weight', title: '7️⃣ 체중관리', description: '급격한 체중 변화' },
+  { id: 'skin', title: '8️⃣ 피부건강', description: '여드름, 가려움, 건조' },
+  { id: 'immunity', title: '9️⃣ 면역력', description: '잦은 감기, 피로 누적' },
+  { id: 'other', title: '🔟 기타 증상', description: '두통, 어지러움, 기타 특이 증상' },
+]
+
 const symptomsList = [
   // 1. 호흡기 건강
   { id: 'cough', label: '기침이 자주 나온다', category: 'respiratory' },
@@ -38,19 +51,6 @@ const symptomsList = [
   // 8. 피부건강
   { id: 'acne', label: '여드름, 뾰루지 등 피부 트러블이 잦다', category: 'skin' },
   { id: 'itchiness_dryness', label: '피부가 가렵거나 건조하다', category: 'skin' },
-  { id: 'dull_skin_tone', label: '피부 톤이 칙칙하고 푸석하다', category: 'skin' },
-  // 9. 면역력
-  { id: 'frequent_cold', label: '감기에 자주 걸린다', category: 'immunity' },
-  { id: 'slow_recovery', label: '상처나 질병의 회복이 더디다', category: 'immunity' },
-  { id: 'chronic_fatigue', label: '피로가 잘 풀리지 않고 누적된다', category: 'immunity' },
-  // 10. 기타 증상
-  { id: 'headache', label: '두통이 자주 있다', category: 'other' },
-  { id: 'dizziness', label: '어지럼증을 느낀다', category: 'other' },
-  { id: 'etc_symptom', label: '설명하기 어려운 다른 불편한 증상이 있다', category: 'other' },
-]
-
-export default function SelfDiagnosis({ onComplete }: SelfDiagnosisProps) {
-  const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([])
   const [showResult, setShowResult] = useState(false)
 
   const handleSymptomToggle = (symptomId: string) => {
@@ -189,44 +189,52 @@ export default function SelfDiagnosis({ onComplete }: SelfDiagnosisProps) {
         </div>
 
         {/* Content */}
-        <div className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            {symptomsList.map((symptom) => (
-              <label 
-                key={symptom.id} 
-                className={`flex items-center space-x-4 p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-md ${
-                  selectedSymptoms.includes(symptom.id)
-                    ? 'border-blue-500 bg-blue-50 shadow-md'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <div className="flex-shrink-0">
-                  <input
-                    type="checkbox"
-                    checked={selectedSymptoms.includes(symptom.id)}
-                    onChange={() => handleSymptomToggle(symptom.id)}
-                    className="w-5 h-5 text-blue-500 rounded focus:ring-blue-500 focus:ring-2"
-                  />
-                </div>
-                <div className="flex-1">
-                  <span className={`font-medium ${
-                    selectedSymptoms.includes(symptom.id) ? 'text-blue-700' : 'text-gray-700'
-                  }`}>
-                    {symptom.label}
-                  </span>
-                </div>
-                <div className="flex-shrink-0">
-                  {selectedSymptoms.includes(symptom.id) && (
-                    <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                  )}
-                </div>
-              </label>
-            ))}
-          </div>
+        <div className="p-6 md:p-8">
+          {categoryInfo.map((category) => (
+            <div key={category.id} className="mb-10">
+              <div className="mb-4 border-b-2 border-gray-100 pb-3">
+                <h3 className="text-xl md:text-2xl font-bold text-gray-800">{category.title}</h3>
+                <p className="text-sm md:text-base text-gray-500 mt-1">{category.description}</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {symptomsList
+                  .filter((symptom) => symptom.category === category.id)
+                  .map((symptom) => (
+                    <label 
+                      key={symptom.id} 
+                      className={`flex items-center space-x-4 p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-md ${
+                        selectedSymptoms.includes(symptom.id)
+                          ? 'border-blue-500 bg-blue-50 shadow-md'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <div className="flex-shrink-0">
+                        <input
+                          type="checkbox"
+                          checked={selectedSymptoms.includes(symptom.id)}
+                          onChange={() => handleSymptomToggle(symptom.id)}
+                          className="w-5 h-5 text-blue-500 rounded focus:ring-blue-500 focus:ring-2"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <span className={`font-medium ${
+                          selectedSymptoms.includes(symptom.id) ? 'text-blue-700' : 'text-gray-700'
+                        }`}>
+                          {symptom.label}
+                        </span>
+                      </div>
+                      {selectedSymptoms.includes(symptom.id) && (
+                        <div className="flex-shrink-0 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                      )}
+                    </label>
+                  ))}
+              </div>
+            </div>
+          ))}
 
           {/* Footer */}
           <div className="bg-gray-50 rounded-xl p-6">
