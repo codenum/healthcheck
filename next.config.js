@@ -2,7 +2,7 @@
 const nextConfig = {
   output: 'export',
   trailingSlash: true,
-  basePath: '/Survey',
+  basePath: '/healthcheck',
   images: {
     unoptimized: true
   }
