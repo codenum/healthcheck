@@ -6,6 +6,9 @@ import LoginModal from '@/components/LoginModal'
 import SelfDiagnosis from '@/components/SelfDiagnosis'
 import HealthManagement from '@/components/HealthManagement'
 import AIChat from '@/components/AIChat'
+import HealthReport from '@/components/HealthReport'
+import HealthOfficeConnect from '@/components/HealthOfficeConnect'
+import VaccinationManagement from '@/components/VaccinationManagement'
 
 export default function HomePage() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
@@ -50,6 +53,12 @@ export default function HomePage() {
         }} />
       case 'health':
         return <HealthManagement type="general" symptoms={[]} />
+      case 'report':
+        return <HealthReport />
+      case 'connect':
+        return <HealthOfficeConnect />
+      case 'vaccination':
+        return <VaccinationManagement />
       case 'chat':
         return <AIChat symptoms={[]} />
       case 'about':
