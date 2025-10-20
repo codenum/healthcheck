@@ -1,4 +1,5 @@
-```tsx
+import React from 'react';
+
 export default function VaccinationManagement() {
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -13,4 +14,3 @@ export default function VaccinationManagement() {
     </div>
   )
 }
-```
