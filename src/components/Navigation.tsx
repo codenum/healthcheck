@@ -25,9 +25,6 @@ export default function Navigation({
     { id: 'home', label: '홈', icon: '🏠' },
     { id: 'diagnosis', label: '자가진단', icon: '🩺' },
     { id: 'health', label: '건강관리', icon: '💊' },
-    { id: 'report', label: '건강리포트', icon: '📊' },
-    { id: 'connect', label: '보건실 연결', icon: '🏥' },
-    { id: 'vaccination', label: '예방접종', icon: '💉' },
     { id: 'chat', label: 'AI상담', icon: '🤖' },
     { id: 'about', label: '서비스 소개', icon: 'ℹ️' }
   ]

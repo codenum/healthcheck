@@ -300,7 +300,10 @@ export default function HomePage() {
 
                 {/* Additional Features Grid */}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-100">
+                  <div 
+                    className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-100 cursor-pointer"
+                    onClick={() => requireLogin(() => setCurrentPage('report'))}
+                  >
                     <div className="flex items-center space-x-3 mb-4">
                       <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
                         <span className="text-2xl">📊</span>
@@ -310,7 +313,10 @@ export default function HomePage() {
                     <p className="text-gray-600 text-sm">개인별 건강 데이터 분석 및 맞춤형 리포트 제공</p>
                   </div>
 
-                  <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-100">
+                  <div 
+                    className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-100 cursor-pointer"
+                    onClick={() => requireLogin(() => setCurrentPage('connect'))}
+                  >
                     <div className="flex items-center space-x-3 mb-4">
                       <div className="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center">
                         <span className="text-2xl">🏥</span>
@@ -320,7 +326,10 @@ export default function HomePage() {
                     <p className="text-gray-600 text-sm">응급상황 시 보건실과 실시간 연결 서비스</p>
                   </div>
 
-                  <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-100">
+                  <div 
+                    className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-shadow border border-gray-100 cursor-pointer"
+                    onClick={() => requireLogin(() => setCurrentPage('vaccination'))}
+                  >
                     <div className="flex items-center space-x-3 mb-4">
                       <div className="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center">
                         <span className="text-2xl">💉</span>
