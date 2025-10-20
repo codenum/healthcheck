@@ -2,6 +2,7 @@
   "name": "survey",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://choiyousin.github.io/Survey",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
