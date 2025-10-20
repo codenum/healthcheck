@@ -51,6 +51,19 @@ const symptomsList = [
   // 8. 피부건강
   { id: 'acne', label: '여드름, 뾰루지 등 피부 트러블이 잦다', category: 'skin' },
   { id: 'itchiness_dryness', label: '피부가 가렵거나 건조하다', category: 'skin' },
+  { id: 'dull_skin_tone', label: '피부 톤이 칙칙하고 푸석하다', category: 'skin' },
+  // 9. 면역력
+  { id: 'frequent_cold', label: '감기에 자주 걸린다', category: 'immunity' },
+  { id: 'slow_recovery', label: '상처나 질병의 회복이 더디다', category: 'immunity' },
+  { id: 'chronic_fatigue', label: '피로가 잘 풀리지 않고 누적된다', category: 'immunity' },
+  // 10. 기타 증상
+  { id: 'headache', label: '두통이 자주 있다', category: 'other' },
+  { id: 'dizziness', label: '어지럼증을 느낀다', category: 'other' },
+  { id: 'etc_symptom', label: '설명하기 어려운 다른 불편한 증상이 있다', category: 'other' },
+]
+
+export default function SelfDiagnosis({ onComplete }: SelfDiagnosisProps) {
+  const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([])
   const [showResult, setShowResult] = useState(false)
 
   const handleSymptomToggle = (symptomId: string) => {
