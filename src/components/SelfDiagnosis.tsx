@@ -98,61 +98,151 @@ export default function SelfDiagnosis({ onComplete }: SelfDiagnosisProps) {
   if (showResult) {
     const result = getRecommendedTypeText()
     return (
-      <div className="card">
-        <div className="text-center">
-          <div className="mb-6">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="bg-white rounded-2xl shadow-xl p-8">
+          <div className="text-center">
+            <div className="mb-8">
+              <div className="w-20 h-20 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h3 className="text-3xl font-bold text-gray-800 mb-4">🎉 진단 완료!</h3>
+              <div className="text-6xl mb-6">{result.type.split(' ')[0]}</div>
+              <h4 className="text-2xl font-semibold text-gray-700 mb-3">{result.type}</h4>
+              <p className="text-lg text-gray-600 max-w-md mx-auto">{result.description}</p>
             </div>
-            <h3 className="text-2xl font-semibold text-gray-800 mb-2">진단 완료</h3>
-            <div className="text-4xl mb-4">{result.type.split(' ')[0]}</div>
-            <h4 className="text-xl font-medium text-gray-700 mb-2">{result.type}</h4>
-            <p className="text-gray-600">{result.description}</p>
+            
+            <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-xl p-6 mb-8">
+              <div className="flex justify-center items-center space-x-3">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+                <p className="text-blue-700 font-medium">맞춤 관리 페이지로 이동 중...</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
+              <div className="flex items-center justify-center space-x-2">
+                <span className="text-green-500">✓</span>
+                <span>증상 분석 완료</span>
+              </div>
+              <div className="flex items-center justify-center space-x-2">
+                <span className="text-green-500">✓</span>
+                <span>맞춤 솔루션 준비</span>
+              </div>
+              <div className="flex items-center justify-center space-x-2">
+                <span className="text-blue-500">⏳</span>
+                <span>페이지 이동 중</span>
+              </div>
+            </div>
           </div>
-          <div className="flex justify-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
-          </div>
-          <p className="text-sm text-gray-500 mt-2">맞춤 관리 페이지로 이동 중...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="card">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">🧾 자가 진단 체크리스트</h2>
-      <p className="text-gray-600 mb-6">현재 느끼고 있는 증상을 선택해주세요</p>
-      
-      <div className="space-y-3 mb-6">
-        {symptomsList.map((symptom) => (
-          <label 
-            key={symptom.id} 
-            className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
-          >
-            <input
-              type="checkbox"
-              checked={selectedSymptoms.includes(symptom.id)}
-              onChange={() => handleSymptomToggle(symptom.id)}
-              className="w-5 h-5 text-primary-500 rounded focus:ring-primary-500"
-            />
-            <span className="text-gray-700">{symptom.label}</span>
-          </label>
-        ))}
-      </div>
+    <div className="max-w-4xl mx-auto p-6">
+      <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-500 to-green-500 p-6 text-white">
+          <div className="flex items-center space-x-3 mb-4">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+              <span className="text-2xl">�</span>
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold">자가 진단 체크리스트</h2>
+              <p className="text-blue-100">현재 느끼고 있는 증상을 선택해주세요</p>
+            </div>
+          </div>
+          
+          <div className="bg-white/10 rounded-lg p-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">진행률</span>
+              <span className="text-sm">{selectedSymptoms.length}/10</span>
+            </div>
+            <div className="w-full bg-white/20 rounded-full h-2 mt-2">
+              <div 
+                className="bg-white rounded-full h-2 transition-all duration-300"
+                style={{ width: `${(selectedSymptoms.length / 10) * 100}%` }}
+              ></div>
+            </div>
+          </div>
+        </div>
 
-      <div className="flex justify-between items-center">
-        <p className="text-sm text-gray-500">
-          {selectedSymptoms.length}개 증상 선택됨
-        </p>
-        <button 
-          onClick={analyzeSymptoms}
-          disabled={selectedSymptoms.length === 0}
-          className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          진단 결과 보기
-        </button>
+        {/* Content */}
+        <div className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {symptomsList.map((symptom) => (
+              <label 
+                key={symptom.id} 
+                className={`flex items-center space-x-4 p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-md ${
+                  selectedSymptoms.includes(symptom.id)
+                    ? 'border-blue-500 bg-blue-50 shadow-md'
+                    : 'border-gray-200 hover:border-gray-300'
+                }`}
+              >
+                <div className="flex-shrink-0">
+                  <input
+                    type="checkbox"
+                    checked={selectedSymptoms.includes(symptom.id)}
+                    onChange={() => handleSymptomToggle(symptom.id)}
+                    className="w-5 h-5 text-blue-500 rounded focus:ring-blue-500 focus:ring-2"
+                  />
+                </div>
+                <div className="flex-1">
+                  <span className={`font-medium ${
+                    selectedSymptoms.includes(symptom.id) ? 'text-blue-700' : 'text-gray-700'
+                  }`}>
+                    {symptom.label}
+                  </span>
+                </div>
+                <div className="flex-shrink-0">
+                  {selectedSymptoms.includes(symptom.id) && (
+                    <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+              </label>
+            ))}
+          </div>
+
+          {/* Footer */}
+          <div className="bg-gray-50 rounded-xl p-6">
+            <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+              <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2">
+                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-blue-600 font-bold text-sm">{selectedSymptoms.length}</span>
+                  </div>
+                  <span className="text-gray-600">개 증상 선택됨</span>
+                </div>
+              </div>
+              
+              <button 
+                onClick={analyzeSymptoms}
+                disabled={selectedSymptoms.length === 0}
+                className={`px-8 py-3 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 ${
+                  selectedSymptoms.length === 0
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-blue-500 to-green-500 text-white hover:shadow-lg'
+                }`}
+              >
+                {selectedSymptoms.length === 0 ? '증상을 선택해주세요' : '🔍 진단 결과 보기'}
+              </button>
+            </div>
+            
+            {selectedSymptoms.length > 0 && (
+              <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+                <p className="text-sm text-blue-700">
+                  💡 선택하신 증상을 바탕으로 맞춤형 건강 관리 솔루션을 제공해드립니다.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )

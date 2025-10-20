@@ -154,88 +154,121 @@ export default function AIChat({ symptoms }: AIChatProps) {
   }
 
   return (
-    <div className="flex flex-col h-screen max-h-[800px] bg-white rounded-lg shadow-lg">
-      {/* 헤더 */}
-      <div className="bg-primary-500 text-white p-4 rounded-t-lg">
-        <h2 className="text-lg font-semibold">🤖 AI 건강 상담</h2>
-        <p className="text-sm opacity-90">24시간 언제든지 건강 상담을 받아보세요</p>
-      </div>
-
-      {/* 메시지 영역 */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
-            <div
-              className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                message.sender === 'user'
-                  ? 'bg-primary-500 text-white'
-                  : 'bg-gray-100 text-gray-800'
-              }`}
-            >
-              <div className="whitespace-pre-wrap text-sm">{message.text}</div>
-              <div className={`text-xs mt-1 ${
-                message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
-              }`}>
-                {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden h-[700px] flex flex-col">
+          {/* 헤더 */}
+          <div className="bg-gradient-to-r from-purple-500 via-blue-500 to-green-500 text-white p-6">
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                <span className="text-2xl">🤖</span>
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold">AI 건강 상담사</h2>
+                <p className="text-blue-100">24시간 언제든지 건강 상담을 받아보세요</p>
               </div>
             </div>
-          </div>
-        ))}
-
-        {isTyping && (
-          <div className="flex justify-start">
-            <div className="bg-gray-100 px-4 py-2 rounded-lg">
-              <div className="flex space-x-1">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-              </div>
+            
+            <div className="mt-4 flex items-center space-x-2 text-sm">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <span className="text-green-100">온라인</span>
+              <span className="text-blue-100 ml-4">응답 시간: 즉시</span>
             </div>
           </div>
-        )}
-        <div ref={messagesEndRef} />
-      </div>
 
-      {/* 빠른 질문 버튼들 */}
-      {messages.length <= 1 && (
-        <div className="p-4 border-t">
-          <p className="text-sm text-gray-600 mb-2">💡 자주 묻는 질문:</p>
-          <div className="flex flex-wrap gap-2">
-            {quickQuestions.map((question, index) => (
-              <button
-                key={index}
-                onClick={() => sendQuickQuestion(question)}
-                className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full transition-colors"
+          {/* 메시지 영역 */}
+          <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                {question}
-              </button>
+                <div className="flex items-start space-x-3 max-w-3xl">
+                  {message.sender === 'ai' && (
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-sm">🤖</span>
+                    </div>
+                  )}
+                  <div
+                    className={`px-4 py-3 rounded-2xl shadow-md ${
+                      message.sender === 'user'
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white ml-12'
+                        : 'bg-white text-gray-800 mr-12'
+                    }`}
+                  >
+                    <div className="whitespace-pre-wrap text-sm leading-relaxed">{message.text}</div>
+                    <div className={`text-xs mt-2 ${
+                      message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
+                    }`}>
+                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                  </div>
+                </div>
+              </div>
             ))}
-          </div>
-        </div>
-      )}
 
-      {/* 입력 영역 */}
-      <div className="p-4 border-t">
-        <div className="flex space-x-2">
-          <input
-            type="text"
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-            placeholder="건강에 대해 궁금한 점을 물어보세요..."
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
-            disabled={isTyping}
-          />
-          <button
-            onClick={sendMessage}
-            disabled={!inputMessage.trim() || isTyping}
-            className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            전송
-          </button>
+            {isTyping && (
+              <div className="flex justify-start">
+                <div className="flex items-start space-x-3">
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm">🤖</span>
+                  </div>
+                  <div className="bg-white px-4 py-3 rounded-2xl shadow-md">
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* 빠른 질문 버튼들 */}
+          {messages.length <= 1 && (
+            <div className="p-6 bg-white border-t">
+              <p className="text-sm text-gray-600 mb-3 font-medium">💡 자주 묻는 질문:</p>
+              <div className="flex flex-wrap gap-2">
+                {quickQuestions.map((question, index) => (
+                  <button
+                    key={index}
+                    onClick={() => sendQuickQuestion(question)}
+                    className="text-xs bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-2 rounded-full transition-colors border border-blue-200 hover:border-blue-300"
+                  >
+                    {question}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 입력 영역 */}
+          <div className="p-6 border-t bg-gray-50">
+            <div className="flex space-x-3">
+              <input
+                type="text"
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                placeholder="건강에 대해 궁금한 점을 물어보세요..."
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                disabled={isTyping}
+              />
+              <button
+                onClick={sendMessage}
+                disabled={!inputMessage.trim() || isTyping}
+                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                  !inputMessage.trim() || isTyping
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:shadow-lg transform hover:scale-105'
+                }`}
+              >
+                {isTyping ? '전송 중...' : '전송'}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
