@@ -27,9 +27,6 @@ jobs:
         
       - name: Build project
         run: npm run build
-        env:
-          BASE_PATH: ""
-          ASSET_PREFIX: ""
         
       - name: Add .nojekyll file
         run: touch out/.nojekyll
