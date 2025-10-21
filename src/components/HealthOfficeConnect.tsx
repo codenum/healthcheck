@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
+import { Hospital, MessageCircle, CalendarClock, HelpCircle, Clock, Phone, Send } from 'lucide-react';
 
 export default function HealthOfficeConnect() {
   const [message, setMessage] = useState('');
@@ -25,7 +26,9 @@ export default function HealthOfficeConnect() {
   return (
     <div className="max-w-6xl mx-auto p-4 sm:p-6 md:p-8">
       <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mb-8">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4">🏥 보건실 연결</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 flex items-center">
+          <Hospital className="mr-3 text-blue-500" size={32} /> 보건실 연결
+        </h2>
         <p className="text-gray-600">
           보건 선생님과 실시간으로 소통하거나 방문 예약을 할 수 있습니다.
         </p>
@@ -35,7 +38,10 @@ export default function HealthOfficeConnect() {
         {/* 왼쪽: 실시간 채팅 */}
         <div className="lg:col-span-2 bg-white rounded-2xl shadow-lg p-6 flex flex-col">
           <div className="flex justify-between items-center mb-4 border-b pb-4">
-            <h3 className="text-xl font-bold text-gray-800">실시간 상담</h3>
+            <h3 className="text-xl font-bold text-gray-800 flex items-center">
+              <MessageCircle className="mr-2 text-gray-600" />
+              실시간 상담
+            </h3>
             <div className="flex items-center space-x-2">
               <span className={`w-3 h-3 rounded-full ${isNurseOnline ? 'bg-green-500' : 'bg-gray-400'}`}></span>
               <span className="text-sm text-gray-600">{isNurseOnline ? '온라인' : '오프라인'}</span>
@@ -63,9 +69,10 @@ export default function HealthOfficeConnect() {
             />
             <button 
               type="submit"
-              className="bg-blue-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-600 disabled:bg-gray-400"
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-600 disabled:bg-gray-400 flex items-center"
               disabled={!isNurseOnline}
             >
+              <Send size={18} className="mr-2" />
               전송
             </button>
           </form>
@@ -75,17 +82,19 @@ export default function HealthOfficeConnect() {
         <div className="bg-white rounded-2xl shadow-lg p-6">
           <h3 className="text-xl font-bold text-gray-800 mb-4">기타 기능</h3>
           <div className="space-y-4">
-            <button className="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors">
-              📅 보건실 방문 예약
+            <button className="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center justify-center">
+              <CalendarClock className="mr-2" />
+              보건실 방문 예약
             </button>
-            <button className="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors">
-              📋 자주 묻는 질문 (FAQ)
+            <button className="w-full bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors flex items-center justify-center">
+              <HelpCircle className="mr-2" />
+              자주 묻는 질문 (FAQ)
             </button>
-            <div className="bg-gray-100 border border-gray-200 rounded-lg p-4 text-center">
-              <h4 className="font-semibold text-gray-800">보건실 운영 시간</h4>
-              <p className="text-sm text-gray-600 mt-1">평일 09:00 ~ 17:00</p>
-              <h4 className="font-semibold text-gray-800 mt-3">긴급 연락처</h4>
-              <p className="text-sm text-gray-600 mt-1">031-123-4567</p>
+            <div className="bg-gray-100 border border-gray-200 rounded-lg p-4">
+              <h4 className="font-semibold text-gray-800 flex items-center"><Clock size={16} className="mr-2" />보건실 운영 시간</h4>
+              <p className="text-sm text-gray-600 mt-1 pl-6">평일 09:00 ~ 17:00</p>
+              <h4 className="font-semibold text-gray-800 mt-3 flex items-center"><Phone size={16} className="mr-2" />긴급 연락처</h4>
+              <p className="text-sm text-gray-600 mt-1 pl-6">031-123-4567</p>
             </div>
           </div>
         </div>

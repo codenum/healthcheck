@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { Home, ClipboardCheck, HeartPulse, Bot, Info, Hospital, LogIn, LogOut, User, Menu, X } from 'lucide-react'
 
 interface NavigationProps {
   currentPage: string
@@ -22,11 +23,11 @@ export default function Navigation({
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const menuItems = [
-    { id: 'home', label: '홈', icon: '🏠' },
-    { id: 'diagnosis', label: '자가진단', icon: '🩺' },
-    { id: 'health', label: '건강관리', icon: '💊' },
-    { id: 'chat', label: 'AI상담', icon: '🤖' },
-    { id: 'about', label: '서비스 소개', icon: 'ℹ️' }
+    { id: 'home', label: '홈', icon: <Home size={20} /> },
+    { id: 'diagnosis', label: '자가진단', icon: <ClipboardCheck size={20} /> },
+    { id: 'health', label: '건강관리', icon: <HeartPulse size={20} /> },
+    { id: 'chat', label: 'AI상담', icon: <Bot size={20} /> },
+    { id: 'report', label: '건강리포트', icon: <Info size={20} /> }
   ]
 
   return (
@@ -36,7 +37,7 @@ export default function Navigation({
           {/* 로고 */}
           <div className="flex items-center space-x-3 cursor-pointer" onClick={() => onNavigate('home')}>
             <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-green-500 rounded-xl flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-lg">🏥</span>
+              <Hospital className="text-white" size={24} />
             </div>
             <div className="hidden sm:block">
               <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
@@ -54,11 +55,11 @@ export default function Navigation({
                 onClick={() => onNavigate(item.id)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center space-x-2 ${
                   currentPage === item.id
-                    ? 'bg-blue-100 text-blue-700 shadow-md'
+                    ? 'bg-blue-100 text-blue-700 shadow-inner'
                     : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
                 }`}
               >
-                <span>{item.icon}</span>
+                {item.icon}
                 <span>{item.label}</span>
               </button>
             ))}
@@ -70,25 +71,25 @@ export default function Navigation({
               <div className="flex items-center space-x-3">
                 <div className="hidden sm:flex items-center space-x-2">
                   <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-blue-600 font-medium text-sm">
-                      {userName.charAt(0)}
-                    </span>
+                    <User className="text-blue-600" size={16} />
                   </div>
                   <span className="text-sm font-medium text-gray-700">{userName}님</span>
                 </div>
                 <button 
                   onClick={onLogout}
-                  className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                  className="text-sm text-gray-500 hover:text-gray-700 transition-colors flex items-center space-x-1.5"
                 >
-                  로그아웃
+                  <LogOut size={14} />
+                  <span>로그아웃</span>
                 </button>
               </div>
             ) : (
               <button 
                 onClick={onLogin}
-                className="bg-gradient-to-r from-blue-500 to-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-blue-500 to-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2"
               >
-                로그인
+                <LogIn size={16} />
+                <span>로그인</span>
               </button>
             )}
 
@@ -97,10 +98,7 @@ export default function Navigation({
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                      d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
-              </svg>
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>

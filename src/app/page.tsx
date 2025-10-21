@@ -3,6 +3,11 @@
 import { useState, useEffect } from 'react'
 import { db } from '@/lib/firebase'
 import { doc, getDoc, updateDoc, increment } from 'firebase/firestore'
+import { 
+  ClipboardCheck, HeartPulse, Bot, Info, Hospital, Syringe, BarChart, 
+  ArrowRight, Users, CheckCircle, MessageCircle, Smile, Target, Lightbulb,
+  Phone, Mail, Sparkles
+} from 'lucide-react'
 import Navigation from '@/components/Navigation'
 import LoginModal from '@/components/LoginModal'
 import SelfDiagnosis from '@/components/SelfDiagnosis'
@@ -113,7 +118,8 @@ export default function HomePage() {
           <div className="max-w-6xl mx-auto px-4 py-16">
             <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-12 shadow-xl">
               <h1 className="text-4xl font-bold text-center mb-8">
-                <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent flex items-center justify-center">
+                  <Info className="mr-3" size={36} />
                   서비스 소개
                 </span>
               </h1>
@@ -121,7 +127,7 @@ export default function HomePage() {
               <div className="prose prose-lg max-w-none">
                 <div className="grid md:grid-cols-2 gap-12 mb-12">
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-800 mb-4">🎯 서비스 목표</h2>
+                    <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center"><Target className="mr-2 text-blue-500" />서비스 목표</h2>
                     <p className="text-gray-600 leading-relaxed">
                       태장고등학교 학생들이 언제 어디서나 건강 상태를 체크하고 관리할 수 있는 
                       디지털 플랫폼을 제공합니다. 전문적인 의료 서비스에 대한 접근성을 높이고, 
@@ -130,7 +136,7 @@ export default function HomePage() {
                   </div>
                   
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-800 mb-4">💡 핵심 가치</h2>
+                    <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center"><Lightbulb className="mr-2 text-yellow-500" />핵심 가치</h2>
                     <ul className="text-gray-600 space-y-2">
                       <li>• <strong>접근성:</strong> 24시간 언제든지 이용 가능</li>
                       <li>• <strong>정확성:</strong> AI 기반 정밀 진단 시스템</li>
@@ -145,24 +151,24 @@ export default function HomePage() {
                   
                   <div className="grid md:grid-cols-3 gap-6">
                     <div className="text-center">
-                      <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl">🩺</span>
+                      <div className="w-16 h-16 bg-blue-500 text-white rounded-full flex items-center justify-center mx-auto mb-4">
+                        <ClipboardCheck size={32} />
                       </div>
                       <h3 className="font-bold text-gray-800 mb-2">스마트 자가진단</h3>
                       <p className="text-sm text-gray-600">증상 기반 건강 상태 체크</p>
                     </div>
                     
                     <div className="text-center">
-                      <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl">🤖</span>
+                      <div className="w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Bot size={32} />
                       </div>
                       <h3 className="font-bold text-gray-800 mb-2">AI 건강 상담</h3>
                       <p className="text-sm text-gray-600">24시간 실시간 상담 서비스</p>
                     </div>
                     
                     <div className="text-center">
-                      <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl">💊</span>
+                      <div className="w-16 h-16 bg-purple-500 text-white rounded-full flex items-center justify-center mx-auto mb-4">
+                        <HeartPulse size={32} />
                       </div>
                       <h3 className="font-bold text-gray-800 mb-2">건강 관리</h3>
                       <p className="text-sm text-gray-600">종합적인 라이프스타일 관리</p>
@@ -177,11 +183,11 @@ export default function HomePage() {
                   </p>
                   <div className="flex justify-center space-x-8">
                     <div className="text-center">
-                      <div className="font-semibold text-gray-800">보건실</div>
+                      <div className="font-semibold text-gray-800 flex items-center justify-center"><Phone size={16} className="mr-2" />보건실</div>
                       <div className="text-gray-600">내선 123</div>
                     </div>
                     <div className="text-center">
-                      <div className="font-semibold text-gray-800">이메일</div>
+                      <div className="font-semibold text-gray-800 flex items-center justify-center"><Mail size={16} className="mr-2" />이메일</div>
                       <div className="text-gray-600">health@taejang.ac.kr</div>
                     </div>
                   </div>
@@ -234,34 +240,38 @@ export default function HomePage() {
                       onClick={() => requireLogin(() => setCurrentPage('diagnosis'))}
                       className="group bg-white text-gray-800 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-50 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2"
                     >
-                      <span className="text-2xl group-hover:animate-pulse">🩺</span>
+                      <ClipboardCheck className="text-blue-500 group-hover:animate-pulse" size={24} />
                       <span>자가진단 시작하기</span>
                     </button>
                     <button 
                       onClick={() => requireLogin(() => setCurrentPage('chat'))}
                       className="group bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white/20 hover:border-white/50 shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2"
                     >
-                      <span className="text-2xl group-hover:animate-bounce">🤖</span>
+                      <Bot className="text-white group-hover:animate-bounce" size={24} />
                       <span>AI 상담받기</span>
                     </button>
                   </div>
 
                   {/* Real-time Statistics */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-                    <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                      <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stats.activeUsers.toLocaleString()}</div>
+                    <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20 flex flex-col items-center justify-center">
+                      <Users className="text-white/80 mb-2" size={28} />
+                      <div className="text-3xl md:text-4xl font-bold text-white mb-1">{stats.activeUsers.toLocaleString()}</div>
                       <div className="text-white/80 text-sm md:text-base">활성 사용자</div>
                     </div>
-                    <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                      <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stats.diagnosesCompleted.toLocaleString()}</div>
+                    <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20 flex flex-col items-center justify-center">
+                      <CheckCircle className="text-white/80 mb-2" size={28} />
+                      <div className="text-3xl md:text-4xl font-bold text-white mb-1">{stats.diagnosesCompleted.toLocaleString()}</div>
                       <div className="text-white/80 text-sm md:text-base">진단 완료</div>
                     </div>
-                    <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                      <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stats.aiConsultations.toLocaleString()}</div>
+                    <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20 flex flex-col items-center justify-center">
+                      <MessageCircle className="text-white/80 mb-2" size={28} />
+                      <div className="text-3xl md:text-4xl font-bold text-white mb-1">{stats.aiConsultations.toLocaleString()}</div>
                       <div className="text-white/80 text-sm md:text-base">AI 상담</div>
                     </div>
-                    <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                      <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stats.satisfaction}%</div>
+                    <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20 flex flex-col items-center justify-center">
+                      <Smile className="text-white/80 mb-2" size={28} />
+                      <div className="text-3xl md:text-4xl font-bold text-white mb-1">{stats.satisfaction}%</div>
                       <div className="text-white/80 text-sm md:text-base">만족도</div>
                     </div>
                   </div>
@@ -288,8 +298,8 @@ export default function HomePage() {
                     className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-500 cursor-pointer border border-gray-100"
                     onClick={() => requireLogin(() => setCurrentPage('diagnosis'))}
                   >
-                    <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                      <span className="text-4xl">🩺</span>
+                    <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                      <ClipboardCheck size={40} />
                     </div>
                     <h3 className="text-2xl font-bold mb-4 text-gray-800">스마트 자가진단</h3>
                     <p className="text-gray-600 mb-6 leading-relaxed">
@@ -298,9 +308,7 @@ export default function HomePage() {
                     </p>
                     <div className="flex items-center text-blue-600 font-semibold group-hover:text-blue-700">
                       <span>진단 시작하기</span>
-                      <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
+                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
 
@@ -308,8 +316,8 @@ export default function HomePage() {
                     className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-500 cursor-pointer border border-gray-100"
                     onClick={() => requireLogin(() => setCurrentPage('health'))}
                   >
-                    <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-blue-500 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                      <span className="text-4xl">💊</span>
+                    <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                      <HeartPulse size={40} />
                     </div>
                     <h3 className="text-2xl font-bold mb-4 text-gray-800">종합 건강 관리</h3>
                     <p className="text-gray-600 mb-6 leading-relaxed">
@@ -318,9 +326,7 @@ export default function HomePage() {
                     </p>
                     <div className="flex items-center text-green-600 font-semibold group-hover:text-green-700">
                       <span>관리 시작하기</span>
-                      <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
+                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
 
@@ -328,8 +334,8 @@ export default function HomePage() {
                     className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-500 cursor-pointer border border-gray-100"
                     onClick={() => requireLogin(() => setCurrentPage('chat'))}
                   >
-                    <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                      <span className="text-4xl">🤖</span>
+                    <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                      <Bot size={40} />
                     </div>
                     <h3 className="text-2xl font-bold mb-4 text-gray-800">AI 건강 상담</h3>
                     <p className="text-gray-600 mb-6 leading-relaxed">
@@ -338,9 +344,7 @@ export default function HomePage() {
                     </p>
                     <div className="flex items-center text-purple-600 font-semibold group-hover:text-purple-700">
                       <span>상담 시작하기</span>
-                      <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
+                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
                 </div>
@@ -352,8 +356,8 @@ export default function HomePage() {
                     onClick={() => requireLogin(() => setCurrentPage('report'))}
                   >
                     <div className="flex items-center space-x-3 mb-4">
-                      <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
-                        <span className="text-2xl">📊</span>
+                      <div className="w-12 h-12 bg-orange-100 text-orange-500 rounded-xl flex items-center justify-center">
+                        <BarChart size={24} />
                       </div>
                       <h4 className="font-bold text-gray-800">건강 리포트</h4>
                     </div>
@@ -365,8 +369,8 @@ export default function HomePage() {
                     onClick={() => requireLogin(() => setCurrentPage('connect'))}
                   >
                     <div className="flex items-center space-x-3 mb-4">
-                      <div className="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center">
-                        <span className="text-2xl">🏥</span>
+                      <div className="w-12 h-12 bg-cyan-100 text-cyan-500 rounded-xl flex items-center justify-center">
+                        <Hospital size={24} />
                       </div>
                       <h4 className="font-bold text-gray-800">보건실 연결</h4>
                     </div>
@@ -378,8 +382,8 @@ export default function HomePage() {
                     onClick={() => requireLogin(() => setCurrentPage('vaccination'))}
                   >
                     <div className="flex items-center space-x-3 mb-4">
-                      <div className="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center">
-                        <span className="text-2xl">💉</span>
+                      <div className="w-12 h-12 bg-pink-100 text-pink-500 rounded-xl flex items-center justify-center">
+                        <Syringe size={24} />
                       </div>
                       <h4 className="font-bold text-gray-800">예방접종 관리</h4>
                     </div>
@@ -407,11 +411,9 @@ export default function HomePage() {
                       onClick={() => setIsLoginModalOpen(true)}
                       className="group bg-white text-gray-800 px-12 py-4 rounded-xl text-xl font-bold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-3 mx-auto"
                     >
-                      <span className="text-2xl group-hover:animate-spin">✨</span>
+                      <Sparkles className="text-yellow-500 group-hover:animate-spin" size={24} />
                       <span>무료로 시작하기</span>
-                      <svg className="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
+                      <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                     </button>
                   ) : (
                     <div className="space-y-6">
@@ -424,15 +426,17 @@ export default function HomePage() {
                       <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <button 
                           onClick={() => setCurrentPage('diagnosis')}
-                          className="bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3 rounded-xl text-lg font-semibold hover:bg-white/30 hover:border-white/50 transform hover:scale-105 transition-all duration-300"
+                          className="bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3 rounded-xl text-lg font-semibold hover:bg-white/30 hover:border-white/50 transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2"
                         >
-                          🩺 자가진단 하기
+                          <ClipboardCheck size={20} />
+                          <span>자가진단 하기</span>
                         </button>
                         <button 
                           onClick={() => setCurrentPage('chat')}
-                          className="bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3 rounded-xl text-lg font-semibold hover:bg-white/30 hover:border-white/50 transform hover:scale-105 transition-all duration-300"
+                          className="bg-white/20 backdrop-blur-sm text-white border-2 border-white/30 px-8 py-3 rounded-xl text-lg font-semibold hover:bg-white/30 hover:border-white/50 transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2"
                         >
-                          🤖 AI 상담받기
+                          <Bot size={20} />
+                          <span>AI 상담받기</span>
                         </button>
                       </div>
                     </div>
