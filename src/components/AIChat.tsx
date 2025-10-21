@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 
 interface AIChatProps {
   symptoms: string[]
+  onStartChat?: () => void
 }
 
 interface Message {
@@ -13,7 +14,7 @@ interface Message {
   timestamp: Date
 }
 
-export default function AIChat({ symptoms }: AIChatProps) {
+export default function AIChat({ symptoms, onStartChat }: AIChatProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -38,6 +39,11 @@ export default function AIChat({ symptoms }: AIChatProps) {
     scrollToBottom()
   }, [messages])
 
+  useEffect(() => {
+    onStartChat?.();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const quickQuestions = [
     '두통이 있을 때 어떻게 해야 하나요?',
     '충분한 수면을 위한 팁을 알려주세요',
@@ -47,14 +53,14 @@ export default function AIChat({ symptoms }: AIChatProps) {
   ]
 
   const aiResponses: Record<string, string> = {
-    '두통': `두통이 있으실 때는 다음과 같은 방법을 시도해보세요:
+    '두통': `두통 완화에 도움이 되는 몇 가지 방법을 알려드릴게요:
 
-🧊 **냉찜질**: 이마나 목 뒤에 차가운 수건을 10-15분간 올려두세요
-💧 **충분한 수분 섭취**: 탈수가 두통의 원인일 수 있어요
-😴 **충분한 휴식**: 조용하고 어두운 곳에서 휴식을 취하세요
-🧘‍♀️ **목과 어깨 마사지**: 긴장으로 인한 두통에 도움이 됩니다
+💧 **수분 섭취**: 탈수는 두통의 흔한 원인입니다. 물을 충분히 마셔보세요.
+🤫 **조용한 환경**: 조용하고 어두운 곳에서 잠시 휴식을 취하세요.
+🧊 **냉찜질**: 이마나 목 뒤에 차가운 수건을 10-15분 정도 대고 있으세요.
+☕ **적당한 카페인**: 소량의 카페인은 일부 두통 완화에 도움이 될 수 있습니다.
 
-증상이 지속되거나 심해지면 보건선생님께 상담받으시길 권합니다.`,
+만약 두통이 심하거나 지속된다면 보건실에 방문하는 것을 권장합니다.`,
 
     '수면': `좋은 수면을 위한 팁을 알려드릴게요:
 
@@ -183,12 +189,6 @@ export default function AIChat({ symptoms }: AIChatProps) {
                 key={message.id}
                 className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                <div className="flex items-start space-x-3 max-w-3xl">
-                  {message.sender === 'ai' && (
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-white text-sm">🤖</span>
-                    </div>
-                  )}
                   <div
                     className={`px-4 py-3 rounded-2xl shadow-md ${
                       message.sender === 'user'

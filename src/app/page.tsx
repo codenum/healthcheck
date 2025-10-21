@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { db } from '@/lib/firebase'
-import { doc, getDoc, updateDoc, increment } from 'firebase/firestore'
+import { doc, getDoc, updateDoc, increment, onSnapshot } from 'firebase/firestore'
 import { 
   ClipboardCheck, HeartPulse, Bot, Info, Hospital, Syringe, BarChart, 
   ArrowRight, Users, CheckCircle, MessageCircle, Smile, Target, Lightbulb,
@@ -26,32 +26,31 @@ export default function HomePage() {
     activeUsers: 0,
     diagnosesCompleted: 0,
     aiConsultations: 0,
-    satisfaction: 0,
+    satisfaction: 0.0,
   })
 
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const docRef = doc(db, "statistics", "main");
-        const docSnap = await getDoc(docRef);
+    const statDocRef = doc(db, "statistics", "main");
 
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setStats({
-            activeUsers: data.activeUsers || 0,
-            diagnosesCompleted: data.diagnosesCompleted || 0,
-            aiConsultations: data.aiConsultations || 0,
-            satisfaction: data.satisfaction || 0,
-          });
-        } else {
-          console.log("No such document!");
-        }
-      } catch (error) {
-        console.error("Error fetching statistics:", error);
+    // onSnapshot으로 실시간 데이터 변경 감지
+    const unsubscribe = onSnapshot(statDocRef, (doc) => {
+      if (doc.exists()) {
+        const data = doc.data();
+        setStats({
+          activeUsers: data.activeUsers || 0,
+          diagnosesCompleted: data.diagnosesCompleted || 0,
+          aiConsultations: data.aiConsultations || 0,
+          satisfaction: data.satisfaction || 0,
+        });
+      } else {
+        console.log("No such document!");
       }
-    };
+    }, (error) => {
+      console.error("Error fetching statistics in real-time:", error);
+    });
 
-    fetchStats();
+    // 컴포넌트가 언마운트될 때 리스너 정리
+    return () => unsubscribe();
   }, []);
 
   const requireLogin = (action: () => void) => {
@@ -62,10 +61,20 @@ export default function HomePage() {
     }
   }
 
-  const handleLoginSuccess = (name: string) => {
+  const handleLoginSuccess = async (name: string) => {
     setIsLoggedIn(true)
     setUserName(name)
     setIsLoginModalOpen(false)
+    
+    // 활성 사용자 수 업데이트
+    try {
+      const statDocRef = doc(db, "statistics", "main");
+      await updateDoc(statDocRef, {
+        activeUsers: increment(1)
+      });
+    } catch (error) {
+      console.error("Error updating active users count:", error);
+    }
   }
 
   const handleLogout = () => {
@@ -112,7 +121,16 @@ export default function HomePage() {
       case 'vaccination':
         return <VaccinationManagement />
       case 'chat':
-        return <AIChat symptoms={[]} />
+        return <AIChat symptoms={[]} onStartChat={async () => {
+          try {
+            const statDocRef = doc(db, "statistics", "main");
+            await updateDoc(statDocRef, {
+              aiConsultations: increment(1)
+            });
+          } catch (error) {
+            console.error("Error updating AI consultations count:", error);
+          }
+        }} />
       case 'about':
         return (
           <div className="max-w-6xl mx-auto px-4 py-16">
@@ -271,7 +289,7 @@ export default function HomePage() {
                     </div>
                     <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20 flex flex-col items-center justify-center">
                       <Smile className="text-white/80 mb-2" size={28} />
-                      <div className="text-3xl md:text-4xl font-bold text-white mb-1">{stats.satisfaction}%</div>
+                      <div className="text-3xl md:text-4xl font-bold text-white mb-1">{stats.satisfaction.toFixed(1)}%</div>
                       <div className="text-white/80 text-sm md:text-base">만족도</div>
                     </div>
                   </div>
