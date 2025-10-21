@@ -101,11 +101,6 @@ export default function HomePage() {
             await updateDoc(statDocRef, {
               diagnosesCompleted: increment(1)
             });
-            // 로컬 상태도 업데이트하여 즉시 반영
-            setStats(prevStats => ({
-              ...prevStats,
-              diagnosesCompleted: prevStats.diagnosesCompleted + 1
-            }));
           } catch (error) {
             console.error("Error updating diagnoses count:", error);
           }
