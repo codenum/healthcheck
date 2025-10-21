@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { db } from '@/lib/firebase'
+import { doc, getDoc } from 'firebase/firestore'
 import Navigation from '@/components/Navigation'
 import LoginModal from '@/components/LoginModal'
 import SelfDiagnosis from '@/components/SelfDiagnosis'
@@ -15,6 +17,37 @@ export default function HomePage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [userName, setUserName] = useState('')
   const [currentPage, setCurrentPage] = useState('home')
+  const [stats, setStats] = useState({
+    activeUsers: 0,
+    diagnosesCompleted: 0,
+    aiConsultations: 0,
+    satisfaction: 0,
+  })
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const docRef = doc(db, "statistics", "main");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setStats({
+            activeUsers: data.activeUsers || 0,
+            diagnosesCompleted: data.diagnosesCompleted || 0,
+            aiConsultations: data.aiConsultations || 0,
+            satisfaction: data.satisfaction || 0,
+          });
+        } else {
+          console.log("No such document!");
+        }
+      } catch (error) {
+        console.error("Error fetching statistics:", error);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   const requireLogin = (action: () => void) => {
     if (isLoggedIn) {
@@ -202,19 +235,19 @@ export default function HomePage() {
                   {/* Real-time Statistics */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
                     <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                      <div className="text-3xl md:text-4xl font-bold text-white mb-2">1,247</div>
+                      <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stats.activeUsers.toLocaleString()}</div>
                       <div className="text-white/80 text-sm md:text-base">활성 사용자</div>
                     </div>
                     <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                      <div className="text-3xl md:text-4xl font-bold text-white mb-2">3,891</div>
+                      <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stats.diagnosesCompleted.toLocaleString()}</div>
                       <div className="text-white/80 text-sm md:text-base">진단 완료</div>
                     </div>
                     <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                      <div className="text-3xl md:text-4xl font-bold text-white mb-2">2,156</div>
+                      <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stats.aiConsultations.toLocaleString()}</div>
                       <div className="text-white/80 text-sm md:text-base">AI 상담</div>
                     </div>
                     <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                      <div className="text-3xl md:text-4xl font-bold text-white mb-2">98.5%</div>
+                      <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stats.satisfaction}%</div>
                       <div className="text-white/80 text-sm md:text-base">만족도</div>
                     </div>
                   </div>
