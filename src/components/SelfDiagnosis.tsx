@@ -24,42 +24,52 @@ const symptomsList = [
   { id: 'cough', label: '기침이 자주 나온다', category: 'respiratory' },
   { id: 'sore_throat', label: '목이 아프거나 따끔거린다', category: 'respiratory' },
   { id: 'runny_nose', label: '콧물이 나거나 코가 막힌다', category: 'respiratory' },
+  { id: 'breathing_difficulty', label: '숨쉬기가 약간 불편하다', category: 'respiratory' },
   // 2. 소화기 건강
   { id: 'stomachache', label: '복통, 속쓰림, 더부룩함이 있다', category: 'digestive' },
   { id: 'indigestion', label: '소화가 잘 안되고 가스가 찬다', category: 'digestive' },
   { id: 'loss_of_appetite', label: '식욕이 없다', category: 'digestive' },
+  { id: 'nausea_vomiting', label: '메스꺼움이나 구토감이 있다', category: 'digestive' },
   // 3. 피로/수면
   { id: 'fatigue', label: '쉽게 피로하고 지친다', category: 'fatigue' },
   { id: 'poor_sleep', label: '수면의 질이 좋지 않다 (자주 깸, 아침에 개운하지 않음)', category: 'fatigue' },
   { id: 'lack_of_concentration', label: '집중력이 떨어지고 멍하다', category: 'fatigue' },
+  { id: 'morning_fatigue', label: '아침에 일어나기 힘들다', category: 'fatigue' },
   // 4. 식습관
   { id: 'irregular_meals', label: '식사 시간이 불규칙하다', category: 'eating' },
   { id: 'late_night_snack', label: '야식이나 폭식을 자주 한다', category: 'eating' },
   { id: 'unbalanced_diet', label: '인스턴트, 단 음식 위주로 식사한다', category: 'eating' },
+  { id: 'eats_too_fast', label: '식사를 너무 빨리 한다', category: 'eating' },
   // 5. 운동 부족
   { id: 'low_activity', label: '하루 대부분을 앉아서 보낸다', category: 'exercise' },
   { id: 'no_regular_exercise', label: '정기적인 운동을 전혀 하지 않는다', category: 'exercise' },
   { id: 'feel_heavy', label: '몸이 무겁고 찌뿌둥하다', category: 'exercise' },
+  { id: 'out_of_breath', label: '조금만 움직여도 숨이 찬다', category: 'exercise' },
   // 6. 정신건강
   { id: 'anxiety', label: '불안하거나 초조함을 자주 느낀다', category: 'mental' },
   { id: 'depressed', label: '기분이 우울하고 무기력하다', category: 'mental' },
   { id: 'high_stress', label: '학업, 대인관계 등 스트레스가 심하다', category: 'mental' },
+  { id: 'irritability', label: '사소한 일에 짜증이 난다', category: 'mental' },
   // 7. 체중관리
   { id: 'sudden_weight_change', label: '최근 급격한 체중 변화가 있었다', category: 'weight' },
   { id: 'weight_satisfaction', label: '현재 체중에 만족하지 않는다', category: 'weight' },
   { id: 'difficulty_in_control', label: '체중 조절에 어려움을 겪는다', category: 'weight' },
+  { id: 'edema', label: '몸이 잘 붓는다', category: 'weight' },
   // 8. 피부건강
   { id: 'acne', label: '여드름, 뾰루지 등 피부 트러블이 잦다', category: 'skin' },
   { id: 'itchiness_dryness', label: '피부가 가렵거나 건조하다', category: 'skin' },
   { id: 'dull_skin_tone', label: '피부 톤이 칙칙하고 푸석하다', category: 'skin' },
+  { id: 'hair_loss', label: '머리카락이 많이 빠지는 것 같다', category: 'skin' },
   // 9. 면역력
   { id: 'frequent_cold', label: '감기에 자주 걸린다', category: 'immunity' },
   { id: 'slow_recovery', label: '상처나 질병의 회복이 더디다', category: 'immunity' },
   { id: 'chronic_fatigue', label: '피로가 잘 풀리지 않고 누적된다', category: 'immunity' },
+  { id: 'mouth_sore', label: '입안이 자주 헌다', category: 'immunity' },
   // 10. 기타 증상
   { id: 'headache', label: '두통이 자주 있다', category: 'other' },
   { id: 'dizziness', label: '어지럼증을 느낀다', category: 'other' },
   { id: 'etc_symptom', label: '설명하기 어려운 다른 불편한 증상이 있다', category: 'other' },
+  { id: 'eye_strain', label: '눈이 뻑뻑하고 피로하다', category: 'other' },
 ]
 
 export default function SelfDiagnosis({ onComplete }: SelfDiagnosisProps) {
