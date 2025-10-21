@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { db } from '@/lib/firebase'
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc, updateDoc, increment } from 'firebase/firestore'
 import Navigation from '@/components/Navigation'
 import LoginModal from '@/components/LoginModal'
 import SelfDiagnosis from '@/components/SelfDiagnosis'
@@ -80,9 +80,23 @@ export default function HomePage() {
   const renderPage = () => {
     switch (currentPage) {
       case 'diagnosis':
-        return <SelfDiagnosis onComplete={(symptoms, type) => {
-          // 진단 완료 후 건강관리 페이지로 이동
-          setCurrentPage('health')
+        return <SelfDiagnosis onComplete={async (symptoms, type) => {
+          // 진단 완료 카운트 업데이트
+          try {
+            const statDocRef = doc(db, "statistics", "main");
+            await updateDoc(statDocRef, {
+              diagnosesCompleted: increment(1)
+            });
+            // 로컬 상태도 업데이트하여 즉시 반영
+            setStats(prevStats => ({
+              ...prevStats,
+              diagnosesCompleted: prevStats.diagnosesCompleted + 1
+            }));
+          } catch (error) {
+            console.error("Error updating diagnoses count:", error);
+          }
+          // 건강관리 페이지로 이동
+          setCurrentPage('health');
         }} />
       case 'health':
         return <HealthManagement type="general" symptoms={[]} />
