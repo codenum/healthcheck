@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { db } from '@/lib/firebase'
-import { doc, getDoc, updateDoc, increment, onSnapshot } from 'firebase/firestore'
+import { doc, updateDoc, increment, onSnapshot } from 'firebase/firestore'
 import { 
   ClipboardCheck, HeartPulse, Bot, Info, Hospital, Syringe, BarChart, 
   ArrowRight, Users, CheckCircle, MessageCircle, Smile, Target, Lightbulb,
@@ -26,13 +26,11 @@ export default function HomePage() {
     activeUsers: 0,
     diagnosesCompleted: 0,
     aiConsultations: 0,
-    satisfaction: 0.0,
   })
 
   useEffect(() => {
     const statDocRef = doc(db, "statistics", "main");
 
-    // onSnapshot으로 실시간 데이터 변경 감지
     const unsubscribe = onSnapshot(statDocRef, (doc) => {
       if (doc.exists()) {
         const data = doc.data();
@@ -40,7 +38,6 @@ export default function HomePage() {
           activeUsers: data.activeUsers || 0,
           diagnosesCompleted: data.diagnosesCompleted || 0,
           aiConsultations: data.aiConsultations || 0,
-          satisfaction: data.satisfaction || 0,
         });
       } else {
         console.log("No such document!");
@@ -49,7 +46,6 @@ export default function HomePage() {
       console.error("Error fetching statistics in real-time:", error);
     });
 
-    // 컴포넌트가 언마운트될 때 리스너 정리
     return () => unsubscribe();
   }, []);
 
@@ -66,7 +62,6 @@ export default function HomePage() {
     setUserName(name)
     setIsLoginModalOpen(false)
     
-    // 활성 사용자 수 업데이트
     try {
       const statDocRef = doc(db, "statistics", "main");
       await updateDoc(statDocRef, {
@@ -266,7 +261,7 @@ export default function HomePage() {
                   </div>
 
                   {/* Real-time Statistics */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-8">
                     <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20 flex flex-col items-center justify-center">
                       <Users className="text-white/80 mb-2" size={28} />
                       <div className="text-3xl md:text-4xl font-bold text-white mb-1">{stats.activeUsers.toLocaleString()}</div>
@@ -281,11 +276,6 @@ export default function HomePage() {
                       <MessageCircle className="text-white/80 mb-2" size={28} />
                       <div className="text-3xl md:text-4xl font-bold text-white mb-1">{stats.aiConsultations.toLocaleString()}</div>
                       <div className="text-white/80 text-sm md:text-base">AI 상담</div>
-                    </div>
-                    <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20 flex flex-col items-center justify-center">
-                      <Smile className="text-white/80 mb-2" size={28} />
-                      <div className="text-3xl md:text-4xl font-bold text-white mb-1">{stats.satisfaction.toFixed(1)}%</div>
-                      <div className="text-white/80 text-sm md:text-base">만족도</div>
                     </div>
                   </div>
                 </div>
