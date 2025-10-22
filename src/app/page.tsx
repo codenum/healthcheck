@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { db } from '@/lib/firebase'
-import { doc, updateDoc, increment, onSnapshot } from 'firebase/firestore'
+import { doc, updateDoc, increment } from 'firebase/firestore'
 import { 
   ClipboardCheck, HeartPulse, Bot, Info, Hospital, Syringe, BarChart, 
   ArrowRight, Users, CheckCircle, MessageCircle, Smile, Target, Lightbulb,
@@ -16,38 +16,13 @@ import AIChat from '@/components/AIChat'
 import HealthReport from '@/components/HealthReport'
 import HealthOfficeConnect from '@/components/HealthOfficeConnect'
 import VaccinationManagement from '@/components/VaccinationManagement'
+import RealtimeStats from '@/components/RealtimeStats'
 
 export default function HomePage() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [userName, setUserName] = useState('')
   const [currentPage, setCurrentPage] = useState('home')
-  const [stats, setStats] = useState({
-    activeUsers: 0,
-    diagnosesCompleted: 0,
-    aiConsultations: 0,
-  })
-
-  useEffect(() => {
-    const statDocRef = doc(db, "statistics", "main");
-
-    const unsubscribe = onSnapshot(statDocRef, (doc) => {
-      if (doc.exists()) {
-        const data = doc.data();
-        setStats({
-          activeUsers: data.activeUsers || 0,
-          diagnosesCompleted: data.diagnosesCompleted || 0,
-          aiConsultations: data.aiConsultations || 0,
-        });
-      } else {
-        console.log("No such document!");
-      }
-    }, (error) => {
-      console.error("Error fetching statistics in real-time:", error);
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   const requireLogin = (action: () => void) => {
     if (isLoggedIn) {
@@ -261,23 +236,7 @@ export default function HomePage() {
                   </div>
 
                   {/* Real-time Statistics */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-8">
-                    <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20 flex flex-col items-center justify-center">
-                      <Users className="text-white/80 mb-2" size={28} />
-                      <div className="text-3xl md:text-4xl font-bold text-white mb-1">{stats.activeUsers.toLocaleString()}</div>
-                      <div className="text-white/80 text-sm md:text-base">활성 사용자</div>
-                    </div>
-                    <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20 flex flex-col items-center justify-center">
-                      <CheckCircle className="text-white/80 mb-2" size={28} />
-                      <div className="text-3xl md:text-4xl font-bold text-white mb-1">{stats.diagnosesCompleted.toLocaleString()}</div>
-                      <div className="text-white/80 text-sm md:text-base">진단 완료</div>
-                    </div>
-                    <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20 flex flex-col items-center justify-center">
-                      <MessageCircle className="text-white/80 mb-2" size={28} />
-                      <div className="text-3xl md:text-4xl font-bold text-white mb-1">{stats.aiConsultations.toLocaleString()}</div>
-                      <div className="text-white/80 text-sm md:text-base">AI 상담</div>
-                    </div>
-                  </div>
+                  <RealtimeStats />
                 </div>
               </div>
             </section>
