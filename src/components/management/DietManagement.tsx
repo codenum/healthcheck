@@ -19,7 +19,9 @@ interface RecommendedFood {
   name: string
   emoji: string
   nutrients: string
-  benefit: string
+  description: string
+  tip: string
+  caution?: string
 }
 
 export default function DietManagement({ symptoms }: DietManagementProps) {
@@ -48,38 +50,162 @@ export default function DietManagement({ symptoms }: DietManagementProps) {
 
   const foodRecommendations: Record<string, RecommendedFood[]> = {
     general: [
-      { name: '사과', emoji: '🍎', nutrients: '비타민C, 식이섬유', benefit: '아침에 먹으면 "금사과"라고 불리며, 장 운동을 돕고 피로 회복에 좋습니다.' },
-      { name: '계란', emoji: '🥚', nutrients: '단백질, 비타민D', benefit: '완전 식품으로 불리며, 근육 형성과 면역력 강화에 필수적입니다.' },
-      { name: '토마토', emoji: '🍅', nutrients: '라이코펜, 비타민K', benefit: '강력한 항산화 작용을 하며 혈관 건강에 도움을 줍니다.' },
+      { 
+        name: '사과', 
+        emoji: '🍎', 
+        nutrients: '비타민C, 펙틴, 퀘르세틴', 
+        description: '수용성 식이섬유인 펙틴이 풍부하여 장내 유익균을 증식시키고 콜레스테롤 배출을 돕습니다. 껍질의 퀘르세틴은 강력한 항산화 작용을 하여 세포 노화를 방지합니다.',
+        tip: '깨끗이 씻어 껍질째 드시는 것이 영양 흡수에 가장 좋습니다.'
+      },
+      { 
+        name: '계란', 
+        emoji: '🥚', 
+        nutrients: '단백질, 비타민D, 레시틴', 
+        description: '필수 아미노산이 골고루 함유된 완전 단백질 식품입니다. 노른자의 레시틴은 뇌세포막을 구성하는 주요 성분으로 기억력 향상에 도움을 줍니다.',
+        tip: '반숙으로 드시면 소화 흡수율이 가장 높습니다.'
+      },
+      { 
+        name: '토마토', 
+        emoji: '🍅', 
+        nutrients: '라이코펜, 비타민K, 칼륨', 
+        description: '강력한 항산화 물질인 라이코펜이 활성산소를 제거하고 혈관 건강을 지켜줍니다. 가열하면 라이코펜의 체내 흡수율이 더욱 높아집니다.',
+        tip: '올리브 오일과 함께 익혀 드시면 흡수율이 5배 이상 증가합니다.'
+      },
     ],
     cold: [
-      { name: '생강차', emoji: '🍵', nutrients: '진저롤, 쇼가올', benefit: '몸을 따뜻하게 하고 염증을 완화하여 목감기에 효과적입니다.' },
-      { name: '배', emoji: '🍐', nutrients: '루테올린', benefit: '기관지 염증을 가라앉히고 가래를 삭이는 데 도움을 줍니다.' },
-      { name: '유자차', emoji: '🍋', nutrients: '비타민C, 구연산', benefit: '레몬보다 비타민C가 3배 많아 감기 예방과 피로 회복에 좋습니다.' },
+      { 
+        name: '생강차', 
+        emoji: '🍵', 
+        nutrients: '진저롤, 쇼가올', 
+        description: '매운맛 성분인 진저롤과 쇼가올이 말초 혈관을 확장시켜 체온을 높이고 면역 세포의 활동을 촉진합니다. 강력한 살균 작용으로 호흡기 바이러스 증식을 억제합니다.',
+        tip: '꿀을 타서 드시면 목의 건조함을 막는 데 더욱 효과적입니다.',
+        caution: '위궤양이 있거나 열이 39도 이상 고열일 때는 섭취를 자제하세요.'
+      },
+      { 
+        name: '배', 
+        emoji: '🍐', 
+        nutrients: '루테올린, 수분', 
+        description: '루테올린 성분이 기관지 점막의 염증을 가라앉히고 가래를 삭이는 거담 작용을 합니다. 풍부한 수분이 열을 내리고 갈증을 해소해줍니다.',
+        tip: '도라지와 함께 달여 드시면 기침 완화 효과가 배가됩니다.'
+      },
+      { 
+        name: '유자차', 
+        emoji: '🍋', 
+        nutrients: '비타민C, 구연산, 리모넨', 
+        description: '레몬보다 3배 많은 비타민C가 인터페론 생성을 도와 바이러스 저항력을 높입니다. 껍질의 리모넨 성분은 목의 염증을 완화하고 기침을 진정시킵니다.',
+        tip: '껍질까지 모두 섭취해야 유자의 효능을 온전히 누릴 수 있습니다.'
+      },
     ],
     stomach: [
-      { name: '매실', emoji: '🫒', nutrients: '유기산', benefit: '소화액 분비를 촉진하고 살균 작용을 하여 배탈에 좋습니다.' },
-      { name: '양배추', emoji: '🥬', nutrients: '비타민U', benefit: '위 점막을 보호하고 재생을 도와 위염 완화에 탁월합니다.' },
-      { name: '무', emoji: '🥕', nutrients: '디아스타아제', benefit: '천연 소화제로 불리며 탄수화물 소화를 돕습니다.' },
+      { 
+        name: '매실', 
+        emoji: '🫒', 
+        nutrients: '유기산(구연산, 사과산)', 
+        description: '신맛을 내는 유기산이 위장 운동을 촉진하고 소화액 분비를 돕습니다. 피크린산 성분이 독성 물질을 분해하여 식중독 예방에도 효과적입니다.',
+        tip: '따뜻한 물에 희석하여 차로 마시면 위장 부담을 줄일 수 있습니다.',
+        caution: '위산 과다 분비 시 속쓰림을 유발할 수 있으니 식후에 드세요.'
+      },
+      { 
+        name: '양배추', 
+        emoji: '🥬', 
+        nutrients: '비타민U, 비타민K', 
+        description: '비타민U가 위 점막의 상처를 치료하고 재생을 돕습니다. 비타민K는 위궤양으로 인한 출혈을 지혈하는 작용을 하여 위 건강을 지켜줍니다.',
+        tip: '열에 약하므로 생으로 먹거나 살짝만 쪄서 드시는 것이 좋습니다.'
+      },
+      { 
+        name: '무', 
+        emoji: '🥕', 
+        nutrients: '디아스타아제, 아밀라아제', 
+        description: '천연 소화제로 불리는 디아스타아제가 탄수화물을 분해하여 소화를 돕습니다. 식이섬유가 풍부하여 장내 노폐물 배출을 촉진합니다.',
+        tip: '껍질에 비타민C가 많으므로 깨끗이 씻어 껍질째 요리하세요.'
+      },
     ],
     fatigue: [
-      { name: '바나나', emoji: '🍌', nutrients: '비타민B, 마그네슘', benefit: '에너지 생성을 돕고 근육의 긴장을 풀어주어 피로 회복에 좋습니다.' },
-      { name: '아몬드', emoji: '🥜', nutrients: '마그네슘, 비타민E', benefit: '에너지 대사를 돕고 항산화 작용을 하여 활력을 줍니다.' },
-      { name: '브로콜리', emoji: '🥦', nutrients: '비타민C, 철분', benefit: '피로 물질을 분해하고 면역력을 높여줍니다.' },
+      { 
+        name: '바나나', 
+        emoji: '🍌', 
+        nutrients: '비타민B6, 마그네슘, 트립토판', 
+        description: '빠르게 에너지로 전환되는 과당과 포도당이 풍부하여 즉각적인 피로 회복을 돕습니다. 마그네슘이 근육의 긴장을 풀고 신경을 안정시켜줍니다.',
+        tip: '검은 반점(슈가 스팟)이 생겼을 때 당도와 면역 활성 효과가 가장 높습니다.'
+      },
+      { 
+        name: '아몬드', 
+        emoji: '🥜', 
+        nutrients: '마그네슘, 비타민E', 
+        description: '에너지 대사에 필수적인 마그네슘이 풍부하여 만성 피로를 개선합니다. 강력한 항산화제인 비타민E가 활성산소로부터 세포를 보호합니다.',
+        tip: '하루 한 줌(약 23알) 정도가 적당하며, 무염 아몬드를 추천합니다.'
+      },
+      { 
+        name: '브로콜리', 
+        emoji: '🥦', 
+        nutrients: '비타민C, 설포라판', 
+        description: '레몬의 2배에 달하는 비타민C가 피로 물질인 젖산을 분해합니다. 설포라판 성분은 체내 독소를 배출하고 면역력을 강화합니다.',
+        tip: '영양소 파괴를 최소화하기 위해 끓는 물에 살짝 데쳐 드세요.'
+      },
     ],
     anemia: [
-      { name: '시금치', emoji: '🥬', nutrients: '철분, 엽산', benefit: '철분이 풍부하여 적혈구 생성을 돕고 빈혈 예방에 좋습니다.' },
-      { name: '소고기', emoji: '🥩', nutrients: '철분, 단백질', benefit: '흡수율이 높은 헴철이 풍부하여 빈혈 개선에 가장 효과적입니다.' },
-      { name: '미역', emoji: '🌿', nutrients: '철분, 칼슘', benefit: '피를 맑게 하고 철분 보충에 도움을 줍니다.' },
+      { 
+        name: '시금치', 
+        emoji: '🥬', 
+        nutrients: '철분, 엽산, 비타민C', 
+        description: '적혈구 생성에 필수적인 철분과 엽산이 풍부합니다. 함께 들어있는 비타민C가 식물성 철분의 체내 흡수율을 높여줍니다.',
+        tip: '수산 성분이 칼슘 흡수를 방해할 수 있으니 살짝 데쳐서 드세요.'
+      },
+      { 
+        name: '소고기', 
+        emoji: '🥩', 
+        nutrients: '헴철, 비타민B12, 단백질', 
+        description: '체내 흡수율이 높은 동물성 철분(헴철)이 풍부하여 빈혈 개선에 가장 효과적입니다. 비타민B12는 적혈구의 정상적인 발달을 돕습니다.',
+        tip: '비타민C가 풍부한 채소와 함께 먹으면 철분 흡수율이 더욱 높아집니다.'
+      },
+      { 
+        name: '미역', 
+        emoji: '🌿', 
+        nutrients: '철분, 칼슘, 요오드', 
+        description: '철분과 엽산이 풍부하여 조혈 작용을 돕고 피를 맑게 합니다. 알긴산 성분은 혈액 순환을 원활하게 하여 빈혈 증상을 완화합니다.',
+        tip: '식초를 곁들이면 칼슘과 철분의 흡수율이 높아집니다.'
+      },
     ],
     brain: [
-      { name: '등푸른 생선', emoji: '🐟', nutrients: '오메가-3', benefit: 'DHA가 풍부하여 뇌 세포를 활성화하고 기억력 향상에 도움을 줍니다.' },
-      { name: '블루베리', emoji: '🫐', nutrients: '안토시아닌', benefit: '강력한 항산화 작용으로 뇌 노화를 막고 집중력을 높여줍니다.' },
-      { name: '호두', emoji: '🌰', nutrients: '비타민E, 오메가-3', benefit: '뇌신경 세포를 보호하고 인지 기능 저하를 막아줍니다.' },
+      { 
+        name: '등푸른 생선', 
+        emoji: '🐟', 
+        nutrients: '오메가-3(DHA, EPA)', 
+        description: '뇌세포막의 주요 성분인 DHA가 뇌 기능을 활성화하고 기억력을 향상시킵니다. EPA는 혈액 순환을 개선하여 뇌로 가는 산소 공급을 원활하게 합니다.',
+        tip: '주 2회 이상 섭취를 권장하며, 튀기기보다 찜이나 조림이 좋습니다.'
+      },
+      { 
+        name: '블루베리', 
+        emoji: '🫐', 
+        nutrients: '안토시아닌, 폴리페놀', 
+        description: '강력한 항산화 물질인 안토시아닌이 뇌세포의 노화를 막고 인지 기능을 개선합니다. 뇌 혈류량을 증가시켜 집중력 향상에 도움을 줍니다.',
+        tip: '껍질에 안토시아닌이 많으므로 껍질째 생으로 먹거나 갈아 드세요.'
+      },
+      { 
+        name: '호두', 
+        emoji: '🌰', 
+        nutrients: '알파리놀렌산, 비타민E', 
+        description: '뇌신경 세포의 60%를 구성하는 불포화지방산이 풍부합니다. 비타민E가 뇌세포 파괴를 막고 인지 기능 저하를 예방합니다.',
+        tip: '산패되기 쉬우므로 밀폐 용기에 담아 냉장 보관하세요.'
+      },
     ],
     stress: [
-      { name: '다크 초콜릿', emoji: '🍫', nutrients: '폴리페놀', benefit: '스트레스 호르몬 수치를 낮추고 기분을 좋게 합니다.' },
-      { name: '우유', emoji: '🥛', nutrients: '트립토판, 칼슘', benefit: '신경을 안정시키고 숙면을 유도하여 스트레스 해소에 좋습니다.' },
+      { 
+        name: '다크 초콜릿', 
+        emoji: '🍫', 
+        nutrients: '폴리페놀, 테오브로민', 
+        description: '코르티솔 같은 스트레스 호르몬 분비를 억제합니다. 테오브로민 성분이 대뇌 피질을 부드럽게 자극하여 사고력을 높이고 기분을 좋게 합니다.',
+        tip: '카카오 함량 70% 이상인 제품을 하루 1-2조각 섭취하세요.',
+        caution: '카페인이 함유되어 있으므로 저녁 늦게 섭취는 피하세요.'
+      },
+      { 
+        name: '우유', 
+        emoji: '🥛', 
+        nutrients: '트립토판, 칼슘, 마그네슘', 
+        description: '필수 아미노산인 트립토판이 행복 호르몬인 세로토닌 생성을 돕습니다. 칼슘과 마그네슘이 신경을 이완시켜 불안감을 해소합니다.',
+        tip: '따뜻하게 데워 마시면 심신 안정 효과가 더욱 좋습니다.',
+        caution: '유당불내증이 있다면 락토프리 우유나 두유로 대체하세요.'
+      },
     ]
   }
 
@@ -360,15 +486,28 @@ export default function DietManagement({ symptoms }: DietManagementProps) {
                     <div className="flex items-start space-x-4">
                       <div className="text-4xl bg-gray-50 p-3 rounded-lg">{food.emoji}</div>
                       <div className="flex-1">
-                        <div className="flex justify-between items-start mb-1">
-                          <h5 className="font-bold text-gray-900">{food.name}</h5>
+                        <div className="flex justify-between items-start mb-2">
+                          <h5 className="font-bold text-gray-900 text-lg">{food.name}</h5>
                           <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full font-medium">
                             {food.nutrients}
                           </span>
                         </div>
-                        <p className="text-sm text-gray-600 leading-relaxed">
-                          {food.benefit}
+                        <p className="text-sm text-gray-600 leading-relaxed mb-3">
+                          {food.description}
                         </p>
+                        <div className="bg-blue-50 p-2.5 rounded-lg text-xs text-blue-800 mb-2">
+                          <span className="font-bold mr-1">💡 Tip:</span>
+                          {food.tip}
+                        </div>
+                        {food.caution && (
+                          <div className="bg-red-50 p-2.5 rounded-lg text-xs text-red-800 flex items-start">
+                            <AlertCircle className="w-3 h-3 mr-1 mt-0.5 flex-shrink-0" />
+                            <span>
+                              <span className="font-bold mr-1">주의:</span>
+                              {food.caution}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
